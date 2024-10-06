@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="stylesheet" href="style-wob.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite App</title>
+</head>
+<body>
+    <div class="flex">
+        <div>
+            <div id="info" style="display: none; position: absolute; top: 10px; left: 10px; background: rgba(255, 255, 255, 0.8); padding: 10px; border-radius: 5px;">
+                <h3 id="planet-name">Planet Name</h3>
+                <p id="planet-info">Some information about the planet.</p>
+                
+            </div>
+        </div>
+        <div>
+            <canvas></canvas>
+        </div>
+    </div>
+    <div id="app"></div>
+    <script type="module" src="/main-wob.js"></script>
+</body>
+</html>

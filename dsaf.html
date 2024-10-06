@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gravitational Lensing Effect with Slider</title>
+    <style>
+        body { margin: 0; overflow: hidden; }
+        canvas { display: block; }
+
+        /* Slider styling */
+        .slider-container {
+            position: absolute;
+            bottom: 280px;
+            text-align: center;
+            width: 100%;
+        }
+        .slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 90%;
+            height: 20%;
+            background: transparent; /* Hide the slider track */
+            outline: none;
+        }
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 160px;
+            height: 165px;
+            background: #ff0000; /* Color of the slider ball */
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .slider::-moz-range-thumb {
+            width: 40px;
+            height: 40px;
+            background: #ff0000;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <!-- Slider HTML -->
+    <div class="slider-container">
+        <input type="range" min="-50" max="50" value="0" class="slider" id="xSlider"> <!-- Initial value set to 0 -->
+    </div>
+
+    <script>
+        // Scene setup
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // Starry background
+        const starTexture = new THREE.TextureLoader().load('https://threejs.org/examples/textures/space1.jpg'); 
+        const starMaterial = new THREE.MeshBasicMaterial({ map: starTexture });
+        const starGeometry = new THREE.SphereGeometry(500, 32, 32);
+        const starrySky = new THREE.Mesh(starGeometry, starMaterial);
+        starrySky.material.side = THREE.BackSide; 
+        scene.add(starrySky);
+
+        // Add a star (large glowing sphere)
+        const starGeometryLarge = new THREE.SphereGeometry(5, 32, 32);
+        const starMaterialLarge = new THREE.MeshStandardMaterial({ 
+            color: 0xffff00, 
+            emissive: 0xffff00, 
+            emissiveIntensity: 2 
+        });
+        const star = new THREE.Mesh(starGeometryLarge, starMaterialLarge);
+        star.position.z = -15;
+        scene.add(star);
+
+        // Add an exoplanet (small textured sphere)
+        const planetTexture = new THREE.TextureLoader().load('https://threejs.org/examples/textures/earth_atmos_2048.jpg'); 
+        const planetBumpMap = new THREE.TextureLoader().load('https://threejs.org/examples/textures/earth_normal_map.png'); 
+        const planetMaterial = new THREE.MeshStandardMaterial({ 
+            map: planetTexture,
+            bumpMap: planetBumpMap,
+            bumpScale: 0.1
+        });
+        const planet = new THREE.Mesh(new THREE.SphereGeometry(1, 32, 32), planetMaterial);
+        planet.position.z = -15; 
+        planet.position.x = 0; 
+        scene.add(planet);
+
+        // Add the Einstein ring
+        const ringGeometry = new THREE.TorusGeometry(5, 0.5, 16, 100);
+        const ringMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00, transparent: true, opacity: 0.6 });
+        const einsteinRing = new THREE.Mesh(ringGeometry, ringMaterial);
+        einsteinRing.position.z = -15; 
+        scene.add(einsteinRing);
+
+        // Lighting setup
+        const ambientLight = new THREE.AmbientLight(0x404040, 1);
+        scene.add(ambientLight);
+
+        const light = new THREE.PointLight(0xffffff, 1.5, 100);
+        light.position.set(10, 10, 10);
+        scene.add(light);
+
+        camera.position.z = 10;
+
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // Rotate the planet
+            planet.rotation.y += 0.01;
+
+            // Warping effect when the planet crosses the star
+            const distance = Math.abs(planet.position.x); // Distance between planet and center (star's x-position)
+            
+            if (distance < 2) { // Planet is near the star, create strong warping effect
+                const warpFactor = (2 - distance) / 2; // Calculate how close the planet is
+                einsteinRing.scale.set(1 + warpFactor * 0.5, 1 + warpFactor * 0.5, 1);
+            } else { // No warping effect when planet is far away
+                einsteinRing.scale.set(1, 1, 1);
+            }
+
+            renderer.render(scene, camera);
+        }
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            renderer.setSize(width, height);
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+        });
+
+        // Slider control logic
+        const xSlider = document.getElementById('xSlider');
+        xSlider.addEventListener('input', (event) => {
+            const xValue = event.target.value;
+            planet.position.x = xValue * 0.1; // Move the planet along the x-axis based on slider value
+        });
+
+        animate();
+    </script>
+</body>
+</html>

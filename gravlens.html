@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Telescopic Method of Finding Exoplanets</title>
+  <style>
+    body { margin: 0; overflow: hidden; }
+    canvas { display: block; }
+  </style>
+</head>
+<body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script>
+    // Scene setup
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x000000);  // Set background color
+
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    // Create a star with glow effect
+    const starGeometry = new THREE.CircleGeometry(2, 32);
+    const starMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00 });
+    const star = new THREE.Mesh(starGeometry, starMaterial);
+    star.position.set(0, 0, -5);  // Position the star in front of the camera
+    scene.add(star);
+
+    // Create planets
+    const planetGeometry = new THREE.CircleGeometry(0.3, 32);  // Smaller planet size
+
+    // First planet (red) - Inside the star but not centered
+    const planetMaterial1 = new THREE.MeshBasicMaterial({ color: 0xff0000, transparent: true, opacity: 0 });
+    const planet1 = new THREE.Mesh(planetGeometry, planetMaterial1);
+    planet1.position.set(-0.5, 0.5, -5);  // Positioned inside the star but slightly off-center
+    scene.add(planet1);
+
+    // Second planet (blue) - Inside the star but not centered
+    const planetMaterial2 = new THREE.MeshBasicMaterial({ color: 0x0000ff, transparent: true, opacity: 0 });
+    const planet2 = new THREE.Mesh(planetGeometry, planetMaterial2);
+    planet2.position.set(0.5, -0.5, -5);  // Positioned inside the star but slightly off-center
+    scene.add(planet2);
+
+    // Third planet (green) - Inside the star but not centered
+    const planetMaterial3 = new THREE.MeshBasicMaterial({ color: 0x00ff00, transparent: true, opacity: 0 });
+    const planet3 = new THREE.Mesh(planetGeometry, planetMaterial3);
+    planet3.position.set(-0.7, -0.3, -5);  // Positioned inside the star but slightly off-center
+    scene.add(planet3);
+
+    // Create stars in the background
+    const starFieldGeometry = new THREE.BufferGeometry();
+    const starFieldCount = 1000;  // Number of background stars
+    const starFieldVertices = new Float32Array(starFieldCount * 3); // Each star has 3 coordinates (x, y, z)
+
+    for (let i = 0; i < starFieldCount; i++) {
+      starFieldVertices.set([
+        (Math.random() - 0.5) * 200,  // Random x position
+        (Math.random() - 0.5) * 200,  // Random y position
+        (Math.random() - 0.5) * 200,  // Random z position
+      ], i * 3);
+    }
+
+    starFieldGeometry.setAttribute('position', new THREE.BufferAttribute(starFieldVertices, 3));
+    const starFieldMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 0.5 });
+    const starField = new THREE.Points(starFieldGeometry, starFieldMaterial);
+    scene.add(starField);
+
+    camera.position.z = 5;  // Adjust camera position to ensure visibility
+
+    let brightness = 1;  // Initial brightness level
+    let decreasing = true;  // Flag to control brightness decrease
+    let delayCounter = 0;  // Delay counter for planet appearance and dimming
+
+    // Animation
+    function animate() {
+      requestAnimationFrame(animate);
+      
+      // Gradually decrease brightness of the star
+      if (decreasing) {
+        brightness -= 0.001;  // Decrease brightness slowly
+        if (brightness <= 0) {
+          brightness = 0;  // Limit brightness to 0
+          decreasing = false;  // Stop decreasing brightness
+        }
+      } else {
+        // Gradually increase brightness to reset the loop
+        brightness += 0.001;  // Increase brightness slowly
+        if (brightness >= 1) {
+          brightness = 1;  // Limit brightness to 1
+          decreasing = true;  // Start decreasing brightness again
+        }
+      }
+
+      // Update star brightness
+      star.material.color.setScalar(brightness);  // Set star brightness based on the scalar value
+
+      // Delay planet appearance and dimming
+      delayCounter++;
+      if (delayCounter > 50) {  // Shorter delay for planets to become visible after star dims
+        // Make planets visible gradually
+        const planetOpacity = (delayCounter - 50) / 100;  // Gradually increase opacity
+        planet1.material.opacity = Math.min(planetOpacity, 1);  // Max opacity is 1
+        planet2.material.opacity = Math.min(planetOpacity, 1);  // Max opacity is 1
+        planet3.material.opacity = Math.min(planetOpacity, 1);  // Max opacity is 1
+      }
+
+      // Sync planet brightness with star's brightness from the beginning
+      if (delayCounter > 150) {
+        const planetBrightness = 1 - brightness;  // Inverse relationship
+        planet1.material.opacity = planetBrightness;  // Adjust brightness of planet1 inversely
+        planet2.material.opacity = planetBrightness;  // Adjust brightness of planet2
+        planet3.material.opacity = planetBrightness;  // Adjust brightness of planet3
+      }
+
+      // Optional: slight camera movement for a dynamic effect
+      camera.position.x += 0.001; // Move camera slightly to the right
+      if (camera.position.x > 5) camera.position.x = -5; // Reset position to loop
+
+      renderer.render(scene, camera);
+    }
+
+    animate();
+
+    // Resize renderer on window resize
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  </script>
+</body>
+</html>

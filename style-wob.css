@@ -1,0 +1,24 @@
+body {
+  margin: 0;
+  overflow: hidden;
+}
+
+.flex {
+  display: flex;
+}
+
+#sidebar {
+  width: 300px; /* Width of the sidebar */
+  height: 100vh; /* Full height */
+  background-color: rgba(255, 255, 255, 0.9); /* Light background */
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5); /* Shadow effect */
+  position: absolute; /* Absolute positioning */
+  top: 0;
+  left: 0;
+  z-index: 10; /* On top of canvas */
+}
+
+.hidden {
+  display: none; /* Hidden by default */
+}

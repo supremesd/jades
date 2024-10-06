@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style2.css"> <!-- External CSS file -->
+    <title>Yogesh Page</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: radial-gradient(circle, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 1) 100%), url('https://images-assets.nasa.gov/image/PIA15258/PIA15258~large.jpg?w=1920&h=853&fit=clip&crop=faces%2Cfocalpoint') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        #h1 {
+            position: fixed;
+            top: 0;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 18vh;
+            width: 100%;
+            height: 20%;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+            z-index: 2;
+            display: flex;
+    
+        }
+
+        #choices {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            position: fixed;
+            bottom: 6%; /* Adjust as needed */
+            z-index: 2;
+            gap: 20px; /* Adds space between rows */
+        }
+
+        .choice-box {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            color: white;
+            font-size: 3vh;
+            width: 300px; /* Adjust the size as needed */
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer; /* To make it feel interactive */
+            transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth background and glow change */
+            backdrop-filter: blur(5px); /* Add a glassmorphic effect */
+            border-radius: 10px; /* Rounded corners for a modern look */
+        }
+
+        /* STORY MODE button takes full width */
+        #choice1 {
+            width: 45%; /* Adjust width for the first row */
+        }
+
+        /* Second row buttons are placed side by side */
+        #row2 {
+            display: flex;
+            justify-content: center;
+            gap: 20px; /* Space between buttons */
+        }
+
+        /* Hover effect */
+        .choice-box:hover {
+            background: rgba(255, 255, 255, 0.3);
+            color: #000; /* Change text color on hover */
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.5); /* Glow effect */
+        }
+
+        /* Glow effect on click */
+        .choice-box:active {
+            box-shadow: 0 0 20px rgba(255, 255, 255, 1), 0 0 40px rgba(255, 255, 255, 0.7); /* Add a stronger glow effect */
+        }
+
+        /* Remove default link styling */
+        a {
+            text-decoration: none; /* Removes underline */
+        }
+
+        a .choice-box {
+            color: white; /* Inherits the color from choice-box */
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <canvas></canvas> <!-- This will stay under the text -->
+    </div>
+
+    <div id="h1">Choose your mode</div>
+
+    <div id="choices">
+        <!-- First row: STORY MODE button, full width -->
+        <div id="choice1" class="choice-box" onclick="startFunction()">STORY MODE</div>
+        
+        <!-- Second row: DATABASE MODE and FREE PLAY buttons side by side -->
+        <div id="row2">
+            <div id="choice3" class="choice-box" onclick="startFunction1()">DATABASE MODE</div>
+            <a href="https://eyes.nasa.gov/apps/exo/?fbclid=IwY2xjawFudxVleHRuA2FlbQIxMAABHRYAschj1HYWMq-5ZzGpN6pj3Wda7KrZYIL2h_CZCqzhFxUoKmdunxlL6w_aem_p_6Zu7gd41-SEMt5Ug0QQQ#/" target="_blank">
+                <div id="choice2" class="choice-box">FREE PLAY</div>
+            </a>
+        </div>
+    </div>
+
+    <script type="module" src="/main2.js"></script>
+    <script>
+        function startFunction() {
+            // Replace 'nextpage.html' with the file you want to link to
+            window.location.href = 'method.html';
+        }
+    </script>
+    <script>
+        function startFunction1() {
+            // Replace 'nextpage.html' with the file you want to link to
+            window.location.href = 'lol.html';
+        }
+    </script>
+</body>
+
+</html>

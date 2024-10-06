@@ -1,0 +1,58 @@
+body {
+    margin: 0;
+    overflow: hidden;
+    background: radial-gradient(circle, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 1) 100%), url('https://images-assets.nasa.gov/image/PIA15258/PIA15258~large.jpg?w=1920&h=853&fit=clip&crop=faces%2Cfocalpoint') no-repeat center center fixed;
+    background-size: cover;
+}
+
+#h1 {
+    position: fixed;
+    top: 0;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 18vh;
+    width: 100%;
+    height: 20%;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+    display: flex;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.8); /* Glow effect */
+}
+
+#choices {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    position: fixed;
+    bottom: 6%; /* Adjust as needed */
+    z-index: 2;
+}
+
+.choice-box {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    color: white;
+    font-size: 3vh;
+    width: 200px; /* Adjust the size as needed */
+    height: 100px;
+    margin: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer; /* To make it feel interactive */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth background and glow change */
+    backdrop-filter: blur(5px); /* Add a glassmorphic effect */
+}
+
+/* Hover effect */
+.choice-box:hover {
+    background: rgba(255, 255, 255, 0.3);
+    color: #000; /* Change text color on hover */
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.5); /* Glow effect */
+}
+
+/* Glow effect on click */
+.choice-box:active {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 1), 0 0 40px rgba(255, 255, 255, 0.7); /* Add a stronger glow effect */
+}

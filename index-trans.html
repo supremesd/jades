@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Transit Method Description</title>
+
+    <style>
+        /* General Body Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        /* Box for the Transit Method Description */
+        #transit-box {
+            position: absolute;
+            top: 20px;
+            left: 20px; /* Move to the left side */
+            width: 300px;
+            background: rgba(255, 255, 255, 0.1); /* Fully transparent background */
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid white; /* White border */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+            opacity: 0; /* Initially hidden */
+            transform: translateY(20px); /* Slight offset for smooth animation */
+            transition: opacity 1.5s ease, transform 1.5s ease; /* Smooth fade and move effect */
+        }
+
+        #transit-box.fade-in {
+            opacity: 1; /* Fully visible */
+            transform: translateY(0); /* Move into place */
+        }
+
+        #transit-box h3 {
+            margin-bottom: 10px;
+            font-size: 22px;
+            color: white; /* White text for title */
+        }
+
+        #transit-box p {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="flex">
+        <div>
+            <div id="info" style="position: absolute; top: 10px; left: 10px; background: rgba(255, 255, 255, 0); padding: 10px; border-radius: 5px;">
+                <!-- Optional Planet Info Box -->
+            </div>
+        </div>
+        <div>
+            <canvas></canvas>
+        </div>
+    </div>
+
+    <!-- Dynamic Transit Method Box with Fade-in Effect -->
+    <div id="transit-box">
+        <h3>Transit Method</h3>
+        <p>The transit method involves observing a planet as it passes in front of its star, causing a small but detectable dip in the star's brightness. This technique helps scientists estimate the size and orbit of the planet.</p>
+    </div>
+
+    <div id="app"></div>
+    <script type="module" src="/main-trans.js"></script>
+
+    <script>
+        // Automatically apply the fade-in effect after a slight delay
+        window.onload = function() {
+            const transitBox = document.getElementById('transit-box');
+            setTimeout(() => {
+                transitBox.classList.add('fade-in'); // Add fade-in class to trigger animation
+            }, 1000); // Delay by 1 second for smoother effect
+        };
+    </script>
+</body>
+</html>
