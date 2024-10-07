@@ -33,9 +33,13 @@ function createStars() {
 
 createStars();
 
-// Create the Sun (Planet) with emissive color for better visibility
+// Load the texture
+const textureLoader = new THREE.TextureLoader();
+const sunTexture = textureLoader.load('/img/ok.jpg');  // Load your texture
+
+// Create the Sun (Planet) with the loaded texture
 const sunMaterial = new THREE.MeshStandardMaterial({
-    color: 0xffcc00,  // Yellow color
+    map: sunTexture,  // Apply the loaded texture
     emissive: 0xffcc00,  // Initial emissive color
     emissiveIntensity: 0.6
 });
@@ -56,7 +60,7 @@ const moon = new THREE.Mesh(new THREE.SphereGeometry(moonRadius, 32, 32), moonMa
 scene.add(moon);
 
 // Create the orbit path for the Moon
-const orbitRadius = moonDistance-4.69;
+const orbitRadius = moonDistance - 4.69;
 const segments = 100;
 const orbitPoints = [];
 

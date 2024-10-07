@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite App</title>
+    <style>
+        /* Keeping the style inline for clarity, if you prefer to separate, feel free to move it to a CSS file */
+        #info {
+            display: block;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 300px;
+            background: rgba(255, 255, 255, 0.1); /* Transparent background */
+            color: white; /* Text color */
+            padding: 20px;
+            border-radius: 10px; /* Rounded corners */
+            border: 2px solid white; /* White border */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Shadow effect */
+            opacity: 0; /* Initially hidden */
+            transform: translateY(60px); /* Start position for animation */
+            transition: opacity 1.5s ease, transform 0.05s ease; /* Transition effects */
+        }
+        /* Style for the back button */
+        .back-button {
+            margin-top: 15px; /* Space above the button */
+            padding: 10px 20px;
+            background-color: rgba(255, 165, 0, 0.7); /* Orange background */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%; /* Make the button full width */
+        }
+        .back-button:hover {
+            background-color: rgba(255, 165, 0, 1); /* Darker on hover */
+        }
+    </style>
+</head>
+<body>
+    <div class="flex">
+        <div>
+            <div id="info">
+                <h3 id="planet-name">Kepler-186f</h3>
+                <p id="planet-info">
+                    Kepler-186f is an exoplanet located approximately 500 light-years away in the constellation of Cygnus. It is notable for being the first Earth-sized planet discovered in the habitable zone of a star similar to our Sun. Orbiting the K-type dwarf star Kepler-186, it has a radius about 1.1 times that of Earth and completes its orbit in roughly 130 days. While its atmospheric composition is unknown, its position within the habitable zone suggests it could support liquid water, making it a prime candidate for habitability. The discovery of Kepler-186f by the Kepler Space Telescope in 2014 is significant as it enhances our understanding of exoplanetary systems and the potential for life beyond Earth.
+                </p>
+                <button class="back-button" onclick="goBack()">Back</button> <!-- Back button inside the info box -->
+            </div>
+        </div>
+        <div>
+            <canvas></canvas>
+        </div>
+    </div>
+    <div id="app"></div>
+    <script type="module" src="/kepler.js"></script>
+    <script>
+        // Show the info box with animation after a delay
+        window.onload = function() {
+            const infoBox = document.getElementById('info');
+            setTimeout(() => {
+                infoBox.style.opacity = '1'; // Make it fully visible
+                infoBox.style.transform = 'translateY(0)'; // Reset transform for the animation
+            }, 1000); // Delay for 1 second before showing
+        };
+
+        // Function to go back to the previous page
+        function goBack() {
+            window.history.back(); // Navigates to the previous page in the history
+        }
+    </script>
+</body>
+</html>

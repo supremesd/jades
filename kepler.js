@@ -1,16 +1,17 @@
 import * as THREE from 'three';
 import vertexShader from './shaders/vertex.glsl';
 import fragmentShader from './shaders/fragment.glsl';
+
+
 import atmosphereVertexShader from './shaders/atmosphereVertex.glsl';
 import atmosphereFragmentShader from './shaders/atmosphereFragment.glsl';
-import glowVertexShader from './shaders/glowVertex.glsl';  // New glow shader
-import glowFragmentShader from './shaders/glowFragment.glsl'; // New glow shader
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, innerWidth / innerHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer({ antialias: true, canvas: document.querySelector('canvas') });
 renderer.setSize(innerWidth, innerHeight);
 renderer.setPixelRatio(window.devicePixelRatio);
+
 
 // Function to create stars
 function createStars() {
@@ -36,109 +37,67 @@ const sphere = new THREE.Mesh(
         vertexShader,
         fragmentShader,
         uniforms: {
-            globeTexture: { value: new THREE.TextureLoader().load('./img/globe.jpg') },
+            globeTexture: { value: new THREE.TextureLoader().load('./img/gsass.jpg') },
         },
-        transparent: true,
     })
 );
 
 scene.add(sphere);
 
+// atmosphere
 const atmosphere = new THREE.Mesh(
     new THREE.SphereGeometry(5, 50, 50),
     new THREE.ShaderMaterial({
         vertexShader: atmosphereVertexShader,
         fragmentShader: atmosphereFragmentShader,
-        uniforms: {
-            glowColor: { value: new THREE.Color(0x00ffff) }, // Your desired glow color
-        },
         blending: THREE.AdditiveBlending,
         side: THREE.BackSide,
     })
 );
 
-// Adjust the scale of the atmosphere for wider spread
-atmosphere.scale.set(1.5, 1.5, 1.5);
+atmosphere.scale.set(1.1, 1.1, 1.1);
 scene.add(atmosphere);
 
-// Glow Layer
-const glowMaterial = new THREE.ShaderMaterial({
-    vertexShader: glowVertexShader,
-    fragmentShader: glowFragmentShader,
-    blending: THREE.AdditiveBlending,
-    side: THREE.BackSide,
-});
-
-const glowSphere = new THREE.Mesh(
-    new THREE.SphereGeometry(6, 50, 50), // Slightly larger than the main sphere
-    glowMaterial
-);
-
-scene.add(glowSphere);
-
-// Moon (Smaller sphere)
-const moonRadius = 1; // Smaller size for the moon
-const moonDistance = 10; // Distance from the main sphere
-
-const moon = new THREE.Mesh(
-    new THREE.SphereGeometry(moonRadius, 32, 32),
-    new THREE.MeshStandardMaterial({ color: 0xaaaaaa }) // Simple grey moon
-);
-
-scene.add(moon);
-
-// Orbit Trail (Orbit circle)
-const orbitGeometry = new THREE.BufferGeometry();
-const orbitRadius = moonDistance;
-const orbitPoints = [];
-const segments = 100;
-
-for (let i = 0; i <= segments; i++) {
-    const theta = (i / segments) * Math.PI * 2;
-    const x = orbitRadius * Math.cos(theta);
-    const y = orbitRadius * Math.sin(theta);
-    orbitPoints.push(x, y, 0);  // y is 0 for a flat circle
-}
-
-const orbitVertices = new Float32Array(orbitPoints);
-orbitGeometry.setAttribute('position', new THREE.BufferAttribute(orbitVertices, 3));
-
-const orbitMaterial = new THREE.LineBasicMaterial({ color: 0x888888 });
-const orbitLine = new THREE.LineLoop(orbitGeometry, orbitMaterial);
-
-// Rotate orbit to lie on XZ plane
-orbitLine.rotation.x = Math.PI / 2;
-scene.add(orbitLine);
-
-let radius = 15; 
-camera.position.z = radius; 
+let radius = 15; // Distance from the planet to the camera
+camera.position.z = radius; // Initial camera position
 
 const mouse = { x: 0, y: 0 };
 let isDragging = false; 
 let previousMouseX = 0; 
 let previousMouseY = 0;
 
+// Function to show slidebar for planet info
 function displayPlanetInfo(event) {
-    const infoDiv = document.getElementById('info');
-    const planetName = document.getElementById('planet-name');
-    const planetInfo = document.getElementById('planet-info');
+  const infoDiv = document.getElementById('info');
+  const planetName = document.getElementById('planet-name');
+  const planetInfo = document.getElementById('planet-info');
 
-    if (infoDiv.style.display === 'block') {
-        infoDiv.style.display = 'none'; 
-    } else {
-        infoDiv.style.display = 'block'; 
-        planetName.textContent = 'Mars';
-        planetInfo.textContent = 'Extract from API';
-    }
+  // Toggle the display of the info div
+  if (infoDiv.style.display === 'block') {
+      infoDiv.style.display = 'none'; // Hide it if it's currently displayed
+  } else {
+      infoDiv.style.display = 'block'; // Show it if it's currently hidden
+
+      //API goes here
+      planetName.textContent = 'mars';
+      planetInfo.textContent = 'extract from API';
+  }
 }
 
+
+// Raycasting to detect sphere clicks
 const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
 
 function onPointerDown(event) {
+    // Calculate pointer position in normalized device coordinates
     pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
     pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+    // Update the picking ray with the camera and pointer position
     raycaster.setFromCamera(pointer, camera);
+
+    // Calculate objects intersecting the picking ray
     const intersects = raycaster.intersectObject(sphere);
 
     if (intersects.length > 0) {
@@ -146,29 +105,21 @@ function onPointerDown(event) {
     }
 }
 
+// Zoom in out
 addEventListener('wheel', (event) => {
     event.preventDefault();
     const zoomSpeed = 0.5; 
-    
     radius -= event.deltaY * zoomSpeed * 0.01; 
     radius = Math.max(10, Math.min(radius, 50)); 
     camera.position.z = radius; 
 }, { passive: false });
-
-let moonOrbitSpeed = 0.01; // Speed of the moon's orbit
-let moonAngle = 0; // Current angle of the moon
 
 function animate() {
     requestAnimationFrame(animate);
     renderer.render(scene, camera);
     sphere.rotation.y += 0.001;
 
-    // Moon Revolution
-    moonAngle += moonOrbitSpeed;
-    moon.position.x = sphere.position.x + moonDistance * Math.cos(moonAngle);
-    moon.position.z = sphere.position.z + moonDistance * Math.sin(moonAngle);
-    moon.position.y = sphere.position.y; // Keep the moon at the same height
-
+    // Calculate the target position of the camera based on mouse movement
     const targetX = mouse.y * 0.5; 
     const targetY = mouse.x * 0.5; 
     camera.position.x = radius * Math.sin(targetY);
@@ -179,6 +130,7 @@ function animate() {
 
 animate();
 
+// for mouse movement
 addEventListener('mousedown', (event) => {
     isDragging = true; 
     previousMouseX = event.clientX; 
@@ -205,4 +157,41 @@ addEventListener('mousemove', (event) => {
     }
 });
 
+// planet thichda info aaucxa
 addEventListener('mousedown', onPointerDown);
+
+
+// FOR RING PLANET 
+// function createSaturnRings() {
+//   const ringMaterial = new THREE.PointsMaterial({
+//     color: 0xffa500, // Set the color of the rings (e.g., orange)
+//     size: 0.02,      // Size of the particles forming the rings
+//   });
+
+//   const ringLayers = [
+//     { innerRadius: 5.8, outerRadius: 6.5, density: 5000 },  // Innermost ring
+//     { innerRadius: 6.9, outerRadius: 7.5, density: 1500 },  // Middle ring
+//     { innerRadius: 7.9, outerRadius: 8.3, density: 1000 },  // Outer ring
+//     // Add more rings here if you want more layers
+//   ];
+
+//   ringLayers.forEach((layer) => {
+//     const ringGeometry = new THREE.BufferGeometry();
+//     const ringCount = layer.density; // Number of particles in this ring layer
+//     const positions = new Float32Array(ringCount * 3);
+
+//     for (let i = 0; i < ringCount; i++) {
+//       const angle = Math.random() * Math.PI * 2; // Random angle around the planet
+//       const distance = layer.innerRadius + Math.random() * (layer.outerRadius - layer.innerRadius); // Random distance between inner and outer radius
+//       positions[i * 3] = Math.cos(angle) * distance; // X coordinate
+//       positions[i * 3 + 1] = (Math.random() - 0.5) * 0.05; // Small Y coordinate offset (for a slight 3D effect)
+//       positions[i * 3 + 2] = Math.sin(angle) * distance; // Z coordinate
+//     }
+
+//     ringGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+//     const rings = new THREE.Points(ringGeometry, ringMaterial);
+//     scene.add(rings);
+//   });
+// }
+
+// createSaturnRings(); n

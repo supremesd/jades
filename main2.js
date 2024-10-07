@@ -185,7 +185,7 @@ function createSaturnRings() {
 createSaturnRings();  // Call the function to create the Saturn rings
 
 // Camera and mouse interaction
-let radius = 200;
+let radius = 10;  // Start with the camera very close to the galaxy
 camera.position.z = radius;
 
 const mouse = { x: 0, y: 0 };
@@ -193,13 +193,17 @@ let isDragging = false;
 let previousMouseX = 0;
 let previousMouseY = 0;
 
-addEventListener('wheel', (event) => {
-    event.preventDefault();
-    const zoomSpeed = 0.9;
-    radius -= event.deltaY * zoomSpeed * 0.01;
-    radius = Math.max(10, Math.min(radius, 300));
-    camera.position.z = radius;
-}, { passive: false });
+// Zoom Out variables
+let zoomOut = true;
+let zoomOutEndZ = 150;  // The final Z position for the zoom-out effect
+let zoomOutSpeed = 1.5; // Control the speed of the zoom-out effect
+
+// Trigger the zoom-out effect
+function startZoomOut() {
+    zoomOut = true;
+}
+
+document.querySelector('canvas').addEventListener('click', startZoomOut); // Trigger zoom out on canvas click
 
 // Animation loop
 function animate() {
@@ -208,6 +212,11 @@ function animate() {
     galaxyGroup.rotation.y += 0.002;
     galaxyGroup.rotation.x += 0.0005;
 
+    // If zoomOut is true, move the camera further away
+    if (zoomOut && camera.position.z < zoomOutEndZ) {
+        camera.position.z += zoomOutSpeed; // Gradually move the camera back
+    }
+
     composer.render();
 
     const targetX = mouse.y * 0.5;
@@ -215,9 +224,9 @@ function animate() {
 
     camera.position.x = radius * Math.sin(targetY);
     camera.position.y = radius * Math.sin(targetX);
-    camera.position.z = radius * Math.cos(targetX);
     camera.lookAt(0, 0, 0);
 }
+
 
 animate();
 

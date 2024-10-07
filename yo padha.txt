@@ -1,0 +1,13 @@
+things to do after you unzip and keep in folder:
+run this code:
+npm create vite@latest
+npm install
+npm run dev
+
+now a whole new folder will be created, either copy each and every codes(html, js, img, shaders, vite.config.js)
+or simply banako folder lai delete garera maile pathako wala paste garne(not sure btw)
+
+then run these codes:
+npm install three
+npm install --save-dev vite-plugin-string
+npm install gasp --save

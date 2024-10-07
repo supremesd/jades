@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
@@ -6,75 +6,15 @@
     <link rel="stylesheet" href="style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite App</title>
-    <style>
-        /* Add styles for the button */
-        .button {
-            position: fixed;
-            bottom: 5%;
-            left: 50%;
-            transform: translateX(-50%);
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-        }
-
-        .button-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.718);
-            border-radius: 5px;
-        }
-
-        button:hover {
-            background-color: #45a049;
-        }
-
-        svg {
-            margin-left: 8px;
-        }
-
-        /* Fade-in animation for J.A.D.E.S */
-        #p2 {
-            font-size: 340px;
-            font-weight: bold;
-            color: white;
-            opacity: 4; /* Initial opacity to 0 for the fade effect */
-            animation: fadeIn 3s ease-in forwards; /* Applying fade-in animation */
-        }
-
-        /* Defining the keyframes for the fade-in animation */
-        @keyframes fadeIn {
-            0% {
-                opacity: 0;
-            }
-            100% {
-                opacity: 0.5;
-            }
-        }
-    </style>
 </head>
 <body>
-    <button class="button" onclick="startFunction()">
-        <div class="button-overlay"></div>
-        <span>PLAY</span>
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 53 58" height="58" width="53">
-            <path stroke-width="9" stroke="currentColor" d="M44.25 36.3612L17.25 51.9497C11.5833 55.2213 4.5 51.1318 4.50001 44.5885L4.50001 13.4115C4.50001 6.86824 11.5833 2.77868 17.25 6.05033L44.25 21.6388C49.9167 24.9104 49.9167 33.0896 44.25 36.3612Z"></path>
-        </svg>
-    </button>
     <div class="flex">
         <div>
-            <div id="info" style="position: absolute; top: 10px; left: 10px; background: rgba(255, 255, 255, 0); padding: 10px; border-radius: 5px;">
+            <div id="info" style="display: none; position: absolute; top: 10px; left: 10px; background: rgba(255, 255, 255, 0.8); padding: 10px; border-radius: 5px;">
+                <h3 id="planet-name">Planet Name</h3>
+                <p id="planet-info">Some information about the planet.</p>
+                
             </div>
-            <div id="p2">J.A.D.E.S</div>
         </div>
         <div>
             <canvas></canvas>
@@ -82,12 +22,5 @@
     </div>
     <div id="app"></div>
     <script type="module" src="/main.js"></script>
-
-    <script>
-        function startFunction() {
-            // Replace 'nextpage.html' with the file you want to link to
-            window.location.href = 'yogesh.html';
-        }
-    </script>
 </body>
 </html>

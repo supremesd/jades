@@ -5,7 +5,72 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <link rel="stylesheet" href="style-wob.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite App</title>
+    <title>Wobble Method Description</title>
+
+    <style>
+        /* General Body Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        /* Box for the Wobble Method Description */
+        #wobble-box {
+            position: absolute;
+            top: 20px;
+            left: 20px; /* Move to the left side */
+            width: 300px;
+            background: rgba(255, 255, 255, 0.1); /* Fully transparent background */
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid white; /* White border */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+            opacity: 0; /* Initially hidden */
+            transform: translateY(20px); /* Slight offset for smooth animation */
+            transition: opacity 1.5s ease, transform 1.5s ease; /* Smooth fade and move effect */
+        }
+
+        #wobble-box.fade-in {
+            opacity: 1; /* Fully visible */
+            transform: translateY(0); /* Move into place */
+        }
+
+        #wobble-box h3 {
+            margin-bottom: 10px;
+            font-size: 22px;
+            color: white; /* White text for title */
+        }
+
+        #wobble-box p {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        /* Button styles */
+        .next-button {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 15px;
+            background-color: #ff5722; /* Button color */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none; /* No underline */
+        }
+
+        .next-button:hover {
+            background-color: #e64a19; /* Darker shade on hover */
+        }
+    </style>
 </head>
 <body>
     <div class="flex">
@@ -13,14 +78,31 @@
             <div id="info" style="display: none; position: absolute; top: 10px; left: 10px; background: rgba(255, 255, 255, 0.8); padding: 10px; border-radius: 5px;">
                 <h3 id="planet-name">Planet Name</h3>
                 <p id="planet-info">Some information about the planet.</p>
-                
             </div>
         </div>
         <div>
             <canvas></canvas>
         </div>
     </div>
+
+    <!-- Dynamic Wobble Method Box with Fade-in Effect -->
+    <div id="wobble-box">
+        <h3>Wobble Method</h3>
+        <p>The wobble method detects the gravitational influence of a planet on its host star, causing the star to move in a small orbit. This motion can be measured through shifts in the star's spectrum, indicating the presence of an orbiting planet.</p>
+        <a href="pegasi.html" class="next-button">51 Pegasi b</a> <!-- Button to redirect -->
+    </div>
+
     <div id="app"></div>
     <script type="module" src="/main-wob.js"></script>
+
+    <script>
+        // Automatically apply the fade-in effect after a slight delay
+        window.onload = function() {
+            const wobbleBox = document.getElementById('wobble-box');
+            setTimeout(() => {
+                wobbleBox.classList.add('fade-in'); // Add fade-in class to trigger animation
+            }, 1000); // Delay by 1 second for smoother effect
+        };
+    </script>
 </body>
 </html>

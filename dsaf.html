@@ -39,6 +39,57 @@
             border-radius: 50%;
             cursor: pointer;
         }
+
+        /* Description box styling */
+        .description-box {
+            position: absolute;
+            top: 20px;
+            left: 20px; /* Position on the left side */
+            width: 300px;
+            background: rgba(255, 255, 255, 0.1); /* Transparent background */
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid white; /* White border */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+            opacity: 0; /* Initially hidden */
+            transform: translateY(20px); /* Slight offset for smooth animation */
+            transition: opacity 1.5s ease, transform 1.5s ease; /* Smooth fade and move effect */
+        }
+
+        .description-box.fade-in {
+            opacity: 1; /* Fully visible */
+            transform: translateY(0); /* Move into place */
+        }
+
+        .description-box h3 {
+            margin-bottom: 10px;
+            font-size: 22px;
+            color: white; /* White text for title */
+        }
+
+        .description-box p {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        /* Button styling */
+        .redirect-button {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            padding: 10px 20px;
+            background-color: #9ae4ff; /* Button color */
+            color: white; /* Text color */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .redirect-button:hover {
+            background-color: #69a6eb; /* Darker shade on hover */
+        }
     </style>
 </head>
 <body>
@@ -48,6 +99,15 @@
     <div class="slider-container">
         <input type="range" min="-50" max="50" value="0" class="slider" id="xSlider"> <!-- Initial value set to 0 -->
     </div>
+
+    <!-- Dynamic Description Box -->
+    <div class="description-box" id="descriptionBox">
+        <h3>Gravitational Lensing</h3>
+        <p>The gravitational lensing effect occurs when a massive object, such as a star or galaxy, bends the light of objects behind it due to its gravitational field. This can create multiple images or distortions of the background objects, creating a stunning visual effect.</p>
+    </div>
+
+    <!-- Redirect Button -->
+    <button class="redirect-button" onclick="window.location.href='/hsc.html'">Go to example:- HSCJ133H03</button>
 
     <script>
         // Scene setup
@@ -141,6 +201,14 @@
             const xValue = event.target.value;
             planet.position.x = xValue * 0.1; // Move the planet along the x-axis based on slider value
         });
+
+        // Automatically apply the fade-in effect for the description box after a slight delay
+        window.onload = function() {
+            const descriptionBox = document.getElementById('descriptionBox');
+            setTimeout(() => {
+                descriptionBox.classList.add('fade-in'); // Add fade-in class to trigger animation
+            }, 1000); // Delay by 1 second for smoother effect
+        };
 
         animate();
     </script>

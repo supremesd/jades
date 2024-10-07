@@ -52,6 +52,24 @@
             font-size: 16px;
             line-height: 1.6;
         }
+
+        /* Button styles */
+        .next-button {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 15px;
+            background-color: #ff5722; /* Button color */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none; /* No underline */
+        }
+
+        .next-button:hover {
+            background-color: #e64a19; /* Darker shade on hover */
+        }
     </style>
 </head>
 <body>
@@ -69,7 +87,9 @@
     <!-- Dynamic Transit Method Box with Fade-in Effect -->
     <div id="transit-box">
         <h3>Transit Method</h3>
-        <p>The transit method involves observing a planet as it passes in front of its star, causing a small but detectable dip in the star's brightness. This technique helps scientists estimate the size and orbit of the planet.</p>
+        <p>The transit method involves observing a planet as it passes in front of its star, causing a small but detectable dip in the star's brightness. This technique helps scientists estimate the size and orbit of the planet. 
+            <br><br>This is one of the planet that was discovered by this method:</p>
+        <a href="kepler.html" class="next-button">Kepler186F</a> <!-- Button to redirect -->
     </div>
 
     <div id="app"></div>

@@ -7,6 +7,39 @@
   <style>
     body { margin: 0; overflow: hidden; }
     canvas { display: block; }
+
+    /* Description box styling */
+    .description-box {
+      position: absolute;
+      top: 20px;
+      left: 20px; /* Position on the left side */
+      width: 300px;
+      background: rgba(255, 255, 255, 0.1); /* Transparent background */
+      color: white;
+      padding: 20px;
+      border-radius: 10px;
+      border: 2px solid white; /* White border */
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+      opacity: 0; /* Initially hidden */
+      transform: translateY(20px); /* Slight offset for smooth animation */
+      transition: opacity 1.5s ease, transform 1.5s ease; /* Smooth fade and move effect */
+    }
+
+    .description-box.fade-in {
+      opacity: 1; /* Fully visible */
+      transform: translateY(0); /* Move into place */
+    }
+
+    .description-box h3 {
+      margin-bottom: 10px;
+      font-size: 22px;
+      color: white; /* White text for title */
+    }
+
+    .description-box p {
+      font-size: 16px;
+      line-height: 1.6;
+    }
   </style>
 </head>
 <body>
@@ -129,6 +162,20 @@
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
     });
+
+    // Automatically apply the fade-in effect for the description box after a slight delay
+    window.onload = function() {
+      const descriptionBox = document.querySelector('.description-box');
+      setTimeout(() => {
+        descriptionBox.classList.add('fade-in'); // Add fade-in class to trigger animation
+      }, 1000); // Delay by 1 second for smoother effect
+    };
   </script>
+
+  <!-- Dynamic Description Box -->
+  <div class="description-box" id="descriptionBox">
+    <h3>Telescopic Method for Finding Exoplanets</h3>
+    <p>The telescopic method of finding exoplanets involves observing the light from distant stars. When a planet passes in front of its star (a transit), it blocks a small portion of the star's light, causing a temporary dip in brightness. This method helps astronomers detect and analyze exoplanets based on the light variations they cause.</p>
+  </div>
 </body>
 </html>
